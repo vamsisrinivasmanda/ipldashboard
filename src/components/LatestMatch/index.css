@@ -1,0 +1,10 @@
+.latest-match-container {
+    background-color: #1e293b;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    color: white;
+    font-family: Bree Serif;
+    border-radius: 13px;
+  }
+  

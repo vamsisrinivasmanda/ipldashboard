@@ -1,9 +1,11 @@
 import {Component} from 'react'
+import Loader from 'react-loader-spinner'
+import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css'
 import TeamCard from '../TeamCard/index'
 import './index.css'
 
 class Home extends Component {
-  state = {iplteam: []}
+  state = {iplteam: [], isLoading: true}
 
   componentDidMount() {
     this.getiplteamdata()
@@ -20,11 +22,17 @@ class Home extends Component {
       name: eachteam.name,
       teamImageUrl: eachteam.team_image_url,
     }))
-    this.setState({iplteam: updateteam})
+    this.setState({iplteam: updateteam, isLoading: false})
   }
 
+  renderLoader = () => (
+    <div className="loader-container" testid="loader">
+      <Loader type="Oval" color="#ffffff" height={50} />
+    </div>
+  )
+
   render() {
-    const {iplteam} = this.state
+    const {iplteam, isLoading} = this.state
     return (
       <div className="home-container">
         <div className="ipl-header">
@@ -35,11 +43,15 @@ class Home extends Component {
           />
           <h1 className="heading">IPL Dashboard</h1>
         </div>
-        <ul className="all-teams">
-          {iplteam.map(eachTeam => (
-            <TeamCard key={eachTeam.id} eachTeam={eachTeam} />
-          ))}
-        </ul>
+        {isLoading ? (
+          this.renderLoader()
+        ) : (
+          <ul className="all-teams">
+            {iplteam.map(eachTeam => (
+              <TeamCard key={eachTeam.id} eachTeam={eachTeam} />
+            ))}
+          </ul>
+        )}
       </div>
     )
   }

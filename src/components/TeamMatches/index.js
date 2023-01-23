@@ -1,7 +1,8 @@
 import {Component} from 'react'
 import Loader from 'react-loader-spinner'
-import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css'
+
 import LatestMatch from '../LatestMatch'
+import MatchCard from '../MatchCard/index'
 import './index.css'
 
 class TeamMatches extends Component {
@@ -15,7 +16,7 @@ class TeamMatches extends Component {
     competingTeam: data.competing_team,
     competingTeamLogo: data.competing_team_logo,
     firstInnings: data.first_innings,
-    secondInnings: data.secondInnings,
+    secondInnings: data.second_innings,
     manOftheMatch: data.man_of_the_match,
     result: data.result,
     date: data.date,
@@ -45,23 +46,57 @@ class TeamMatches extends Component {
   }
 
   renderLoader = () => (
-    <div className="loader-container">
+    <div className="loader-container" testid="loader">
       <Loader type="Oval" color="#ffffff" height={50} />
     </div>
   )
 
+  getClassname = () => {
+    const {match} = this.props
+    const {params} = match
+    const {id} = params
+    switch (id) {
+      case 'RCB':
+        return 'rcb'
+      case 'KKR':
+        return 'kkr'
+      case 'KXP':
+        return 'kxp'
+      case 'CSK':
+        return 'csk'
+      case 'RR':
+        return 'rr'
+      case 'MI':
+        return 'mi'
+      case 'SH':
+        return 'srh'
+      case 'DC':
+        return 'dc'
+      default:
+        return ''
+    }
+  }
+
   render() {
     const {teamData, isloading} = this.state
-    const {teamBanner, latestMatch} = teamData
+    const {teamBanner, latestMatch, recentMatches} = teamData
+    const bckground = this.getClassname()
+
+    console.log(teamData)
     return (
-      <div>
+      <div className={`team-match-container ${bckground}`}>
         {isloading ? (
           this.renderloader()
         ) : (
           <div className="team-match-container">
-            <img src={teamBanner} alt="team match" />
+            <img src={teamBanner} alt="team banner" />
             <p>Latest Matches</p>
             <LatestMatch latestMatchData={latestMatch} />
+            <ul className="recent-match-cards">
+              {recentMatches.map(eachmatch => (
+                <MatchCard key={eachmatch.id} eachMatch={eachmatch} />
+              ))}
+            </ul>
           </div>
         )}
       </div>
