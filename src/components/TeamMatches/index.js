@@ -94,7 +94,7 @@ class TeamMatches extends Component {
             <LatestMatch latestMatchData={latestMatch} />
             <ul className="recent-match-cards">
               {recentMatches.map(eachmatch => (
-                <MatchCard key={eachmatch.id} eachMatch={eachmatch} />
+                <MatchCard key={eachmatch.competingTeam} eachMatch={eachmatch} />
               ))}
             </ul>
           </div>
